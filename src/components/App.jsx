@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-
+import TodoItem from "./TodoItem";
 function App() {
-  const [inputValue, setInputValue] = useState(""); // State to hold input value
-  const [items, setItems] = useState([]); // State to hold list items
+  const [inputText, setInputText] = useState("");
+  const [items, setItems] = useState([]);
 
-  // Function to handle input change
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value); // Update input value state
-  };
+  function handleChange(event) {
+    const newValue = event.target.value;
+    setInputText(newValue);
+  }
 
-  // Function to handle adding item to list
-  const handleAddItem = () => {
-    if (inputValue.trim() !== "") {
-      // Check if input value is not empty
-      setItems([...items, inputValue]); // Add input value to items array
-      setInputValue(""); // Clear input value
-    }
-  };
+  function deleteItem(id) {
+    setItems((prevItems) => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
+
+  function addItem() {
+    setItems((prevItems) => {
+      return [...prevItems, inputText];
+    });
+    setInputText("");
+  }
 
   return (
     <div className="container">
@@ -24,15 +30,20 @@ function App() {
         <h1>To-Do List</h1>
       </div>
       <div className="form">
-        <input type="text" value={inputValue} onChange={handleInputChange} />
-        <button onClick={handleAddItem}>
+        <input onChange={handleChange} type="text" value={inputText} />
+        <button onClick={addItem}>
           <span>Add</span>
         </button>
       </div>
       <div>
         <ul>
-          {items.map((item, index) => (
-            <li key={index}>{item}</li> // Render each item as li
+          {items.map((todoItem, index) => (
+            <TodoItem
+              key={index}
+              id={index}
+              text={todoItem}
+              delfunc={deleteItem}
+            />
           ))}
         </ul>
       </div>
