@@ -5,7 +5,6 @@ This is a simple Todo App built with React.
 ## Features
 
 - Add new todos
-- Mark todos as completed
 - Delete todos
 
 ## Installation
